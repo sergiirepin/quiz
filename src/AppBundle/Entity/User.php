@@ -35,16 +35,6 @@ class User implements UserInterface
      */
     private $password;
 
-    /**
-     * @ORM\OneToMany(
-     *      targetEntity="Quiz",
-     *      mappedBy="user",
-     *      orphanRemoval=true
-     * )
-     */
-    private $quizzes;
-
-
     public function __construct()
     {
         $this->quizzes = new ArrayCollection();

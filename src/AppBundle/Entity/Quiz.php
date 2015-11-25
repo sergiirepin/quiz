@@ -18,8 +18,8 @@ class Quiz
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="quizzes")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 
