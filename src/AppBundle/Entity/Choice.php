@@ -26,7 +26,7 @@ class Choice
     /**
      * @ORM\Column(type="boolean")
      */
-    private $is_right;
+    private $isRight;
 
     /**
      * @ORM\Column(type="string")
@@ -52,7 +52,7 @@ class Choice
      */
     public function setIsRightChoice($isRightChoice)
     {
-        $this->is_right = $isRightChoice;
+        $this->isRight = $isRightChoice;
 
         return $this;
     }
@@ -64,7 +64,7 @@ class Choice
      */
     public function getIsRightChoice()
     {
-        return $this->is_right;
+        return $this->isRight;
     }
 
     /**
@@ -100,7 +100,7 @@ class Choice
      */
     public function setIsRight($isRight)
     {
-        $this->is_right = $isRight;
+        $this->isRight = $isRight;
 
         return $this;
     }
@@ -112,7 +112,7 @@ class Choice
      */
     public function getIsRight()
     {
-        return $this->is_right;
+        return $this->isRight;
     }
 
     /**
