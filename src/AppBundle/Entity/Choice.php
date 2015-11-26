@@ -34,6 +34,11 @@ class Choice
     private $choice;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $choiceMark;
+
+    /**
      * Get id
      *
      * @return integer
@@ -41,30 +46,6 @@ class Choice
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Set isRightChoice
-     *
-     * @param boolean $isRightChoice
-     *
-     * @return Choice
-     */
-    public function setIsRightChoice($isRightChoice)
-    {
-        $this->isRight = $isRightChoice;
-
-        return $this;
-    }
-
-    /**
-     * Get isRightChoice
-     *
-     * @return boolean
-     */
-    public function getIsRightChoice()
-    {
-        return $this->isRight;
     }
 
     /**
@@ -118,11 +99,10 @@ class Choice
     /**
      * Set question
      *
-     * @param \AppBundle\Entity\Question $question
-     *
+     * @param string $question
      * @return Choice
      */
-    public function setQuestion(\AppBundle\Entity\Question $question = null)
+    public function setQuestion($question = null)
     {
         $this->question = $question;
 
@@ -131,11 +111,33 @@ class Choice
 
     /**
      * Get question
-     *
-     * @return \AppBundle\Entity\Question
      */
     public function getQuestion()
     {
         return $this->question;
+    }
+
+    /**
+     * Set choiceMark
+     *
+     * @param string $choiceMark
+     *
+     * @return Choice
+     */
+    public function setChoiceMark($choiceMark)
+    {
+        $this->choiceMark = $choiceMark;
+
+        return $this;
+    }
+
+    /**
+     * Get choiceMark
+     *
+     * @return string
+     */
+    public function getChoiceMark()
+    {
+        return $this->choiceMark;
     }
 }
