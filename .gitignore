@@ -10,3 +10,7 @@
 /vendor/
 /web/bundles/
 .idea
+.phpintel
+quiz.sublime-project
+quiz.sublime-workspace
+/web/fixtures/
