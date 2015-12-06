@@ -17,4 +17,16 @@ class ChoiceRepository extends EntityRepository
 
 		return array_map('current', $result);
 	}
+
+	public function getQuestionChoicesContent($questionId)
+	{
+		$result = $this->createQueryBuilder('c')
+			->select('c')
+			->where('c.question = :question_id AND c.isRight = 1')
+			->setParameter('question_id', $questionId)
+			->getQuery()
+			->getResult();
+
+		return $result;
+	}
 }

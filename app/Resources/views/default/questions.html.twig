@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	{% if app.session.flashbag.has('success') %}
+		<p style="color:green"> {{ app.session.flashbag.get('success').0 }} </p>
+	{% elseif app.session.flashbag.has('error') %}
+		<p style="color:red"> {{ app.session.flashbag.get('error').0 }} </p>
+	{% endif %}
+	{{ form_start(form) }}
+	{{ form_errors(form) }}
+	<div> 
+		<span style="font-weight: bold">Q.{{ question.id }}</span>
+		{{ question.question }}
+	</div>
+	<ol style="list-style-type: upper-alpha">
+		{%for child in form.choices %}
+			<li>
+				{{ form_widget(child) }}
+				{{ form_label(child) }}
+			</li>
+		{% endfor %}
+	</ol>
+	{{ form_row(form.check) }}
+	{{ form_end(form) }}
+{% endblock %}

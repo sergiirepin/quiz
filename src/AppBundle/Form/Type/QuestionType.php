@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\Question;
 use AppBundle\Entity\Choice;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class QuestionType extends AbstractType
 {	
@@ -25,6 +26,7 @@ class QuestionType extends AbstractType
 		$builder
 			->add('choices', 'entity', array(
 				'class'	=> 'AppBundle:Choice',
+				'constraints' => array(new NotNull()),
 				'choice_label' => 'choice',
 				'query_builder'	=> function(EntityRepository $er){
 					return $er->createQueryBuilder('c')
