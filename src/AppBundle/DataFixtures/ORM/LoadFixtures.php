@@ -23,13 +23,15 @@ class LoadFixtures implements FixtureInterface, ContainerAwareInterface
 
     public function loadQuestions(ObjectManager $manager)
     {
-        $path = $this->container->get('kernel')->getRootDir() . '/../web/fixtures/' . 'questions.csv';
+        $path = $this->container->get('kernel')
+            ->getRootDir(). '/../web/fixtures/' . 'questions.csv';
         $csvData = array_map('str_getcsv', file($path));
         array_shift($csvData);
 
         foreach($csvData as $csvQuestion){
             $question = new Question();
             $question->setQuestion($csvQuestion[1]);
+            $question->setAdditional($csvQuestion[2]);
             $manager->persist($question);
         }
         $manager->flush();
@@ -37,7 +39,8 @@ class LoadFixtures implements FixtureInterface, ContainerAwareInterface
 
     public function loadChoices(ObjectManager $manager)
     {
-        $path = $this->container->get('kernel')->getRootDir() . '/../web/fixtures/' . 'choices.csv';
+        $path = $this->container->get('kernel')
+            ->getRootDir(). '/../web/fixtures/'. 'choices.csv';
         $csvData = array_map('str_getcsv', file($path));
         array_shift($csvData);
         $repository = $manager->getRepository('AppBundle:Question');

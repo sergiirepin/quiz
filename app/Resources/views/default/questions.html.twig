@@ -12,6 +12,12 @@
 		<span style="font-weight: bold">Q.{{ question.id }}</span>
 		{{ question.question }}
 	</div>
+	{% if image_path %}
+		<img src="{{ asset(image_path) }}" alt="Question image" />
+	{% endif %}
+	{% if question.additional %}
+		<div>{{ question.additional | raw }}</div>
+	{% endif %}
 	<ol style="list-style-type: upper-alpha">
 		{%for child in form.choices %}
 			<li>

@@ -23,6 +23,11 @@ class Question
     private $question;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $additional;
+
+    /**
      * Get id
      *
      * @return integer
@@ -54,5 +59,29 @@ class Question
     public function getQuestion()
     {
         return $this->question;
+    }
+
+    /**
+     * Set additional
+     *
+     * @param string $additional
+     *
+     * @return Question
+     */
+    public function setAdditional($additional)
+    {
+        $this->additional = $additional;
+
+        return $this;
+    }
+
+    /**
+     * Get additional
+     *
+     * @return string
+     */
+    public function getAdditional()
+    {
+        return $this->additional;
     }
 }
