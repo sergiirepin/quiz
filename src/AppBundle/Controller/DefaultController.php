@@ -60,15 +60,19 @@ class DefaultController extends Controller
             if (is_array($currentChoices)) {
                 $currentChoices = array_map('current' ,$currentChoices);
             } else {
-                $currentChoices = array($currentChoices->getId());
+                $currentChoices = ($currentChoices) ? array($currentChoices->getId()) : '';
             }
             $rightChoices = $query->getQuestionChoices($id);
-            
-            (!array_diff($currentChoices, $rightChoices))
+
+            if($form->get('next')->isClicked()) {
+                return $this->redirectToRoute('random');
+            }
+
+            (!array_diff($rightChoices, $currentChoices))
                 ? $notice->add('success', "Congratulation, it's a right answer!")
                 : $notice->add('error', "Sorry, this is wrong answer.");
 
-            return $this->redirectToRoute('random');
+            return $this->redirect($this->generateUrl('question', array('id' => $id)));
         }
 
         $imageHelper = new Image($question, $this->get('kernel'));

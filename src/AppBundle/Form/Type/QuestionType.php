@@ -52,6 +52,7 @@ class QuestionType extends AbstractType
 				)
 			)
 			->add('check', 'submit', array('label' => 'Check answer'))
+			->add('next', 'submit', array('label' => 'Next question'))
 		;
 	}
 

@@ -18,7 +18,7 @@
 	{% if question.additional %}
 		<div>{{ question.additional | raw }}</div>
 	{% endif %}
-	<ol style="list-style-type: upper-alpha">
+	<ol id="answers" style="list-style-type: upper-alpha">
 		{%for child in form.choices %}
 			<li>
 				{{ form_widget(child) }}
