@@ -16,11 +16,11 @@ use Symfony\Component\Validator\Constraints\NotNull;
 
 class QuestionType extends AbstractType
 {	
-	private $question;
+	protected $question;
 
-	private $choice;
+	protected $choice;
 
-	private $isMultiple;
+	protected $isMultiple;
 
 	public function __construct($question, $choice)
 	{
@@ -61,7 +61,7 @@ class QuestionType extends AbstractType
 		return 'app_question';
 	}
 
-	private function countRightAnswers()
+	protected function countRightAnswers()
 	{
 		return count($this->choice->getQuestionChoicesContent($this->question->getId()));
 	}

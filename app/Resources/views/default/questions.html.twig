@@ -26,6 +26,8 @@
 			</li>
 		{% endfor %}
 	</ol>
-	{{ form_row(form.check) }}
+	{% if form.check is defined %}
+	    {{ form_row(form.check) }}
+    {% endif %}
 	{{ form_end(form) }}
 {% endblock %}
