@@ -20,12 +20,15 @@ class QuestionType extends AbstractType
 
 	protected $choice;
 
+	protected $questionsCount;
+
 	protected $isMultiple;
 
-	public function __construct($question, $choice)
+	public function __construct($question, $choice, $size = null)
 	{
 		$this->question = $question;
 		$this->choice = $choice;
+		$this->questionsCount =$size;
 	}
 
 	public function buildForm(FormBuilderInterface $builder, array $options)
@@ -53,6 +56,9 @@ class QuestionType extends AbstractType
 			)
 			->add('check', 'submit', array('label' => 'Check answer'))
 			->add('next', 'submit', array('label' => 'Next question'))
+			->add('questionId', 'choice', array(
+				'choices' => $this->getQuestionsRange(),
+			))
 		;
 	}
 
@@ -64,5 +70,12 @@ class QuestionType extends AbstractType
 	protected function countRightAnswers()
 	{
 		return count($this->choice->getQuestionChoicesContent($this->question->getId()));
+	}
+
+	protected function getQuestionsRange()
+	{
+		$questions = range(1, $this->questionsCount);
+		array_unshift($questions, 'random');
+		return $questions;
 	}
 }

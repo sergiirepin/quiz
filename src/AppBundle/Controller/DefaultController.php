@@ -7,9 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
 use AppBundle\Form\Type\QuestionType;
 use AppBundle\Form\Type\QuestionQuizType;
 use AppBundle\Helper\Image;
+use AppBundle\Entity\Question;
 
 class DefaultController extends Controller
 {
@@ -25,7 +27,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/answer/{id}", name="answer")
+     * @Route("/answer/{id}", name="answer", defaults={"id" = 1})
      */
     public function showAnswerAction($id)
     {
@@ -46,18 +48,33 @@ class DefaultController extends Controller
     /**
      * @Route("/question/{id}", name="question")
      */
-    public function showQuestionAction($id, Request $request)
+    public function showQuestionAction($id=null, Request $request)
     {
         $session = new Session();
         $notice = $session->getFlashBag();
-
         $query = $this->getDoctrine()->getRepository('AppBundle:Question');
+        $size = $query->size();
+
+        if(!$id) {
+            $response = new Response();
+            $response->headers->clearCookie('checked');
+            $response->sendHeaders();
+            return $this->redirect($this->generateUrl('question', array('id' => mt_rand(1, $size))));
+        }
+
         $question = $query->find($id);
         $query = $this->getDoctrine()->getRepository('AppBundle:Choice');
-        $form = $this->createForm(new QuestionType($question, $query));
+        $form = $this->createForm(new QuestionType($question, $query, $size));
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if($form->get('next')->isClicked()) {
+            $id = ($form->get('questionId')->getViewData())
+                ? $form->get('questionId')->getViewData()
+                : mt_rand(1, $size);
+            return $this->redirect($this->generateUrl('question', array('id' => $id)));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
             $currentChoices = $form["choices"]->getViewData();
             if (is_array($currentChoices)) {
                 $currentChoices = array_map('current' ,$currentChoices);
@@ -66,36 +83,21 @@ class DefaultController extends Controller
             }
             $rightChoices = $query->getQuestionChoices($id);
 
-            if($form->get('next')->isClicked()) {
-                return $this->redirectToRoute('random');
-            }
-
             (!array_diff($rightChoices, $currentChoices))
                 ? $notice->add('success', "Congratulation, it's a right answer!")
                 : $notice->add('error', "Sorry, this is wrong answer.");
-
             return $this->redirect($this->generateUrl('question', array('id' => $id)));
         }
 
         $imageHelper = new Image($question, $this->get('kernel'));
 
         return $this->render(
-            'default/questions.html.twig', 
+            'default/questions.html.twig',
             array(
                 'question'  => $question,
                 'form'      => $form->createView(),
                 'image_path' => $imageHelper->getImageAssetPath()
             ));
-    }
-
-    /**
-     * @Route("/random", name="random")
-     */
-    public function randomAction(Request $request)
-    {   
-        $query = $this->getDoctrine()->getRepository('AppBundle:Question');
-        $questionId = mt_rand(1, $query->size());
-        return $this->redirectToRoute('question', ["id"=> $questionId]);
     }
 
     /**
@@ -115,7 +117,6 @@ class DefaultController extends Controller
         }
         if (!$session->get('questionsForAnswer')) {
             $questionsForAnswer = range(1, $query->size());
-            //$questionsForAnswer = range(1, 3);
             $session->set('questionsForAnswer', $questionsForAnswer);
             $session->set('countOfAllAnswers', $query->size());
             $session->set('countOfRightAnswers', 0);
@@ -178,7 +179,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/quiz/new")
+     * @Route("/quiz/new", name="new-quiz")
      */
     public function newQuizAction()
     {

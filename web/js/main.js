@@ -1,7 +1,9 @@
 (function($){
     $('button').click(function(e){
 
-    	var checked = $('#answers li input').map(function(){ return $(this).prop('checked')});
+    	var checked = $('#answers li input').map(function() {
+            return $(this).prop('checked')
+        }).toArray();
 
         if(this.id == 'app_question_next') {
             $('#answers li input').removeAttr('required');

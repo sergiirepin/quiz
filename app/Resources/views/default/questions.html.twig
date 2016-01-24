@@ -2,21 +2,25 @@
 
 {% block body %}
 	{% if app.session.flashbag.has('success') %}
-		<p style="color:green"> {{ app.session.flashbag.get('success').0 }} </p>
+		<p class="message alert-success"> {{ app.session.flashbag.get('success').0 }} </p>
 	{% elseif app.session.flashbag.has('error') %}
-		<p style="color:red"> {{ app.session.flashbag.get('error').0 }} </p>
+		<p class="message alert-danger"> {{ app.session.flashbag.get('error').0 }} </p>
 	{% endif %}
 	{{ form_start(form) }}
-	{{ form_errors(form) }}
-	<div> 
-		<span style="font-weight: bold">Q.{{ question.id }}</span>
+	{% if not form.vars.valid %}
+		<div class="message alert-danger">
+			{{ form_errors(form) }}
+		</div>
+	{% endif %}
+	<p>
+		<strong>Q.{{ question.id }}</strong>
 		{{ question.question }}
-	</div>
+	</p>
 	{% if image_path %}
-		<img src="{{ asset(image_path) }}" alt="Question image" />
+		<p><img src="{{ asset(image_path) }}" alt="Question image" /></p>
 	{% endif %}
 	{% if question.additional %}
-		<div>{{ question.additional | raw }}</div>
+		<p>{{ question.additional | raw }}</p>
 	{% endif %}
 	<ol id="answers" style="list-style-type: upper-alpha">
 		{%for child in form.choices %}
@@ -26,8 +30,16 @@
 			</li>
 		{% endfor %}
 	</ol>
-	{% if form.check is defined %}
-	    {{ form_row(form.check) }}
-    {% endif %}
+	<div class="col-xs-3 buttons">
+		{% if form.check is defined %}
+			{{ form_widget(form.check, {'attr': {'class': 'btn btn-default'}}) }}
+		{% endif %}
+		{{ form_widget(form.next, {'attr': {'class': 'btn btn-default'}}) }}
+	</div>
+	{% if form.questionId is defined %}
+		<div class="col-xs-2 buttons">
+			{{ form_widget(form.questionId, {'attr': {'class': 'form-control'}}) }}
+		</div>
+	{% endif %}
 	{{ form_end(form) }}
 {% endblock %}

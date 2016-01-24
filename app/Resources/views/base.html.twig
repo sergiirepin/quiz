@@ -2,15 +2,51 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <title>{% block title %}MagQz{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/main.css') }}">
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {% block main  %}
+            {% block nav %}
+                <nav class="navbar navbar-inverse navbar-fixed-top">
+                    <div class="container">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a class="navbar-brand" href="{{ path('homepage') }}">MagQz</a>
+                        </div>
+                        <div id="navbar" class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav">
+                                <li {% if app.request.attributes.get('_route') == 'quiz' %} class="active" {% endif %}>
+                                    <a href="{{ path('quiz') }}" title="Start/Continue Quiz" >Start</a>
+                                </li>
+                                <li {% if app.request.attributes.get('_route') == 'new-quiz' %} class="active" {% endif %}>
+                                    <a href="{{ path('new-quiz') }}" title="Restart Quiz">Restart</a>
+                                </li>
+                                <li {% if app.request.attributes.get('_route') == 'question' %} class="active" {% endif %}>
+                                    <a href="{{ path('question') }}" title="Random question">Train</a>
+                                </li>
+                            </ul>
+                        </div><!--/.nav-collapse -->
+                    </div>
+                </nav>
+            {% endblock %}
+            <div class="container">
+                <div class="row">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+        {% endblock %}
         {% block javascripts %}
-            <script src="{{ asset('/js/jquery-2.1.4.min.js') }}"></script>
+            <script src="{{ asset('/js/jquery-1.12.0.min.js') }}"></script>
             <script src="{{ asset('/js/js.cookie.js') }}"></script>
+            <script src="{{ asset('/js/bootstrap.min.js') }}"></script>
             <script src="{{ asset('/js/main.js') }}"></script>
         {% endblock %}
     </body>

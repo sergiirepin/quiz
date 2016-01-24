@@ -1,0 +1,18 @@
+body {
+    padding-top: 80px;
+}
+
+p.message {
+    padding: 10px;
+}
+div.message {
+    padding: 10px;
+}
+
+div.message ul {
+    margin: auto;
+}
+
+div.buttons {
+    width: auto;
+}

@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-	<div> 
-		<span style="font-weight: bold">Q.{{ question.id }}</span>
+	<p>
+		<strong>Q.{{ question.id }}</strong>
 		{{ question.question }}
-	</div>
+	</p>
 	<ol  style="list-style-type: none">
 		{% for choice in right_choices %}
 			<li>

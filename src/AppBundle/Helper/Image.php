@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class Image
 {
-	const IMAGE_URL = 'images/questions/';
+	const IMAGE_DIR_PATH = 'img/questions/';
 	
 	const WEB_URL = '/../web/';
 
@@ -26,7 +26,7 @@ class Image
 
     public function getImageName()
     {
-        return self::IMAGE_URL. 'q'. $this->question->getId(). '.png';
+        return self::IMAGE_DIR_PATH. 'q'. $this->question->getId(). '.png';
     }
 
     public function getImagePath()
