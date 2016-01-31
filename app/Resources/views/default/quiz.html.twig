@@ -1,0 +1,33 @@
+{% extends 'default/questions.html.twig' %}
+
+{% block progressbar %}
+    <script>
+        function getElapsedTime() {
+            return parseInt({{ elapsedTime }});
+        }
+
+        function getQuizOverallTime() {
+            return parseInt({{ quizOverallTime }});
+        }
+
+        function getResultPage() {
+            return "{{ url('result') }}";
+        }
+    </script>
+    <div class="progress">
+        <span class="progress-value">Time remaining...</span>
+        <div class="progress-bar progress-bar-info timer" role="progressbar" style="width: {{ progress.remaining }}%;">
+            <span class="sr-only"></span>
+        </div>
+    </div>
+    <div class="progress">
+        <span class="progress-value">Completed...</span>
+        <div class="progress-bar progress-bar-success completed" style="width: {{ progress.completed }}%;">
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('/js/progress.js') }}"></script>
+{% endblock %}

@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+	{% block progressbar %}{% endblock %}
 	{% if app.session.flashbag.has('success') %}
 		<p class="message alert-success"> {{ app.session.flashbag.get('success').0 }} </p>
 	{% elseif app.session.flashbag.has('error') %}

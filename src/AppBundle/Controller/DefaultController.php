@@ -106,15 +106,18 @@ class DefaultController extends Controller
     public function quizAction(Request $request)
     {
         $session = new Session();
+        if(!$session->get('startTime')) {
+            $session->set('startTime', time());
+        }
 
         $query = $this->getDoctrine()->getRepository('AppBundle:Question');
+        $questionsCount = $query->size();
 
-        if($session->get('questionsForAnswer') !== null && count($session->get('questionsForAnswer')) == 0) {
-            $allQuestions = $session->get('countOfAllAnswers');
-            $rightAnswers = $session->get('countOfRightAnswers');
-            $session->clear();
-            return new Response("You answer correctly $rightAnswers questions out of $allQuestions");
+        if($this->get('quiz.validation')->isCompleted()
+            || $this->get('quiz.validation')->timeIsUp()) {
+            return $this->redirect($this->generateUrl('result'));
         }
+
         if (!$session->get('questionsForAnswer')) {
             $questionsForAnswer = range(1, $query->size());
             $session->set('questionsForAnswer', $questionsForAnswer);
@@ -145,7 +148,7 @@ class DefaultController extends Controller
         $form = $this->createForm(new QuestionQuizType($question, $query));
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted()  && $form->isValid()) {
             $session->set('questionsForAnswer', $ids);
             $currentChoices = $form["choices"]->getViewData();
             if (is_array($currentChoices)) {
@@ -169,12 +172,18 @@ class DefaultController extends Controller
 
         $imageHelper = new Image($question, $this->get('kernel'));
 
+        $progress['completed'] = round(($questionsCount - count($session->get('questionsForAnswer')))*100/$questionsCount);
+        $progress['remaining'] = round(100 - $this->get('quiz.validation')->getElapsedTime()*100/$this->get('quiz.validation')->getQuizOverallTime());
+
         return $this->render(
-            'default/questions.html.twig', 
+            'default/quiz.html.twig',
             array(
-                'question'  => $question,
-                'form'      => $form->createView(),
-                'image_path' => $imageHelper->getImageAssetPath()
+                'question'      => $question,
+                'form'          => $form->createView(),
+                'image_path'    => $imageHelper->getImageAssetPath(),
+                'elapsedTime'   => $this->get('quiz.validation')->getElapsedTime(),
+                'progress'      => $progress,
+                'quizOverallTime'   => $this->get('quiz.validation')->getQuizOverallTime()
             ));
     }
 
@@ -186,5 +195,22 @@ class DefaultController extends Controller
         $session = new Session();
         $session->clear();
         return $this->redirectToRoute('quiz');
+    }
+
+    /**
+     * @Route("/quiz/result", name="result")
+     */
+    public function resultAction()
+    {
+        $session = new Session();
+        $allQuestions = $session->get('countOfAllAnswers');
+        $rightAnswers = $session->get('countOfRightAnswers');
+        $session->clear();
+        return $this->render(
+            'default/result.html.twig',
+            array(
+                'rightAnswers'      => $rightAnswers,
+                'allQuestionsCount' => $allQuestions
+            ));
     }
 }
