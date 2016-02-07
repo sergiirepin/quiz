@@ -21,7 +21,7 @@
 		<p><img src="{{ asset(image_path) }}" alt="Question image" /></p>
 	{% endif %}
 	{% if question.additional %}
-		<p>{{ question.additional | raw }}</p>
+		<p class="additional">{{ question.additional | raw }}</p>
 	{% endif %}
 	<ol id="answers" style="list-style-type: upper-alpha">
 		{%for child in form.choices %}

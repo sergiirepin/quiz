@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    You answer correctly {{rightAnswers}} questions out of {{ allQuestionsCount }}.
+    Your result: <mark>{{ result.answers }}%</mark> in <mark>{{ result.time }}</mark>.
 {% endblock %}

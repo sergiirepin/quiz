@@ -54,9 +54,9 @@ class DefaultController extends Controller
         $notice = $session->getFlashBag();
         $query = $this->getDoctrine()->getRepository('AppBundle:Question');
         $size = $query->size();
+        $response = new Response();
 
         if(!$id) {
-            $response = new Response();
             $response->headers->clearCookie('checked');
             $response->sendHeaders();
             return $this->redirect($this->generateUrl('question', array('id' => mt_rand(1, $size))));
@@ -203,14 +203,19 @@ class DefaultController extends Controller
     public function resultAction()
     {
         $session = new Session();
-        $allQuestions = $session->get('countOfAllAnswers');
-        $rightAnswers = $session->get('countOfRightAnswers');
+        $allQuestions = (int)$session->get('countOfAllAnswers');
+        $rightAnswers = (int)$session->get('countOfRightAnswers');
+        $startTime = $session->get('startTime');
+        $result['answers'] = ($allQuestions)
+            ? number_format($rightAnswers*100/$allQuestions, 1)
+            : 0;
+        $result['time'] = gmdate('g:i:s', time() - $startTime);
         $session->clear();
         return $this->render(
             'default/result.html.twig',
             array(
-                'rightAnswers'      => $rightAnswers,
-                'allQuestionsCount' => $allQuestions
-            ));
+                'result' => $result
+            )
+        );
     }
 }

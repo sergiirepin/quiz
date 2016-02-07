@@ -26,3 +26,7 @@ div.buttons {
     right:0;
     left:0;
 }
+
+p.additional {
+    margin-left:20px;
+}
