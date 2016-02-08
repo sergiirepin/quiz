@@ -221,4 +221,12 @@ class DefaultController extends Controller
             )
         );
     }
+
+    /**
+     * @Route("/contacts", name="contacts")
+     */
+    public function contactsAction()
+    {
+        return $this->render('default/contacts.html.twig');
+    }
 }

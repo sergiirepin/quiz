@@ -32,6 +32,9 @@
                                 <li {% if app.request.attributes.get('_route') == 'question' %} class="active" {% endif %}>
                                     <a href="{{ path('question') }}" title="Random question">Train</a>
                                 </li>
+                                <li {% if app.request.attributes.get('_route') == 'contacts' %} class="active" {% endif %}>
+                                    <a href="{{ path('contacts') }}" title="Contacts">Contacts</a>
+                                </li>
                             </ul>
                         </div><!--/.nav-collapse -->
                     </div>
