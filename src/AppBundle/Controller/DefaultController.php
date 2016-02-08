@@ -205,11 +205,14 @@ class DefaultController extends Controller
         $session = new Session();
         $allQuestions = (int)$session->get('countOfAllAnswers');
         $rightAnswers = (int)$session->get('countOfRightAnswers');
-        $startTime = $session->get('startTime');
+        $startTimestamp = $session->get('startTime');
+        $startTime = new \DateTime();
+        $startTime->setTimestamp($startTimestamp);
+        $currentTime = new \DateTime();
         $result['answers'] = ($allQuestions)
             ? number_format($rightAnswers*100/$allQuestions, 1)
             : 0;
-        $result['time'] = gmdate('g:i:s', time() - $startTime);
+        $result['time'] = $currentTime->diff($startTime)->format('%hh:%im:%ss');
         $session->clear();
         return $this->render(
             'default/result.html.twig',
