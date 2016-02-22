@@ -139,9 +139,11 @@ class DefaultController extends Controller
             unset($ids[$key]);
         }
 
-        dump(count($session->get('questionsForAnswer')));
-        dump($session->get('countOfRightAnswers'));
-        dump($id);
+        if( $this->get('kernel')->getEnvironment() == 'dev' ) {
+            dump(count($session->get('questionsForAnswer')));
+            dump($session->get('countOfRightAnswers'));
+            dump($id);
+        }
 
         $question = $query->find($id);
         $query = $this->getDoctrine()->getRepository('AppBundle:Choice');
