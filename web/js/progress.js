@@ -11,10 +11,9 @@
     var counterBack = setInterval(function(){
         elapsedTime++;
         if(elapsedTime <= quizOverallTime){
-            console.log(elapsedTime);
+            var d = new Date((quizOverallTime - elapsedTime)*1000);
+            $('#time').html('Remaining time: ' + d.toISOString().substr(11,8));
             $('.timer').css('width', remainingWidth(elapsedTime)+'%');
-            console.log(remainingWidth(elapsedTime));
-            console.log($('.timer').css('width'));
         } else {
             clearInterval(counterBack);
             document.location.href = resultPage;

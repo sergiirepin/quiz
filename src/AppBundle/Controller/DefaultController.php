@@ -175,6 +175,8 @@ class DefaultController extends Controller
         $imageHelper = new Image($question, $this->get('kernel'));
 
         $progress['completed'] = round(($questionsCount - count($session->get('questionsForAnswer')))*100/$questionsCount);
+        $progress['totalQuestions'] = $questionsCount;
+        $progress['answeredQuestions'] = $questionsCount - count($session->get('questionsForAnswer'));
         $progress['remaining'] = round(100 - $this->get('quiz.validation')->getElapsedTime()*100/$this->get('quiz.validation')->getQuizOverallTime());
 
         return $this->render(

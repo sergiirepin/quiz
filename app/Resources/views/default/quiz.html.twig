@@ -15,13 +15,13 @@
         }
     </script>
     <div class="progress">
-        <span class="progress-value">Time remaining...</span>
+        <span id="time" class="progress-value"></span>
         <div class="progress-bar progress-bar-info timer" role="progressbar" style="width: {{ progress.remaining }}%;">
             <span class="sr-only"></span>
         </div>
     </div>
     <div class="progress">
-        <span class="progress-value">Completed...</span>
+        <span class="progress-value">Completed {{ progress.answeredQuestions }} from {{ progress.totalQuestions }} </span>
         <div class="progress-bar progress-bar-success completed" style="width: {{ progress.completed }}%;">
         </div>
     </div>
